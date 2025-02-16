@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from pydantic import BaseModel
 import joblib 
 import pandas as pd
@@ -22,7 +22,7 @@ class LoanApproval(BaseModel):
     CoapplicantIncome:float
     LoanAmount:float 
     Loan_Amount_Term: float
-#    Credit_History: float
+    Credit_History: float
     Property_Area: float
 
 @app.post("/predict")
@@ -31,7 +31,7 @@ async def predict_loan_status(application: LoanApproval):
     input_data[num_cols] = scaler.transform(input_data[num_cols])
 
     result = model.predict(input_data)
-
+    
     if result[0] == 1:
         return {'Loan Status': "Approved"}
     else:
